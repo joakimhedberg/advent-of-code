@@ -27,7 +27,5 @@ for (const seed of rangedSeeds) {
   }
 }
 
-console.log(locationIdsRange.length)
-
 console.log(`Part 1: ${Math.min(...locationIds)}`)
 console.log(`Part 2: ${smallestLocationIdByRange}`)

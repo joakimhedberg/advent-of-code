@@ -1,5 +1,4 @@
 import fs from 'fs'
-import calculateTotalArea, { calculateRibbonLength } from './functions/calculation'
 import Present from './classes/Present'
 
 const data = fs.readFileSync('./data/input.txt', 'utf-8')

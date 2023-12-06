@@ -5,7 +5,6 @@ import ScratchCardCollection from "./classes/ScratchCardCollection";
 const data: string = fs.readFileSync('./data/input.txt', 'utf-8')
 const collection = new ScratchCardCollection()
 if (!collection.parse(data)) {
-  console.log('Unable to parse')
   process.exit()  
 }
 
