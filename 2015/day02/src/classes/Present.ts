@@ -23,6 +23,5 @@ export default class Present {
     const ribbonLength = parms.slice(0, 2).reduce((a, b) => a + b)
     const bowLength = this.length * this.width * this.height
     return ribbonLength + bowLength
-    //return this.length + this.length + this.width + this.width + bowLength
   }
 }
