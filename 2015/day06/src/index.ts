@@ -6,9 +6,9 @@ const data = fs.readFileSync('./data/input.txt', 'utf-8')
 
 const controllers = LightController.parse(data)
 const array = new ChristmasLightArray()
+const arrayPart2 = new ChristmasLightArray(true)
 
 controllers.forEach(controller => controller.perform(array))
-
+controllers.forEach(controller => controller.perform(arrayPart2))
 console.log('Part 1: ' + array.countOn)
-
-// 379875 and 379350 are too high
+console.log('Part 2: ' + arrayPart2.totalBrightness)

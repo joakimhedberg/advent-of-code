@@ -1,21 +1,22 @@
 import LightActionEnum from "../enum/LightActionEnum"
+import ICoordinate from "../interfaces/ICoordinate"
 import ChristmasLightArray from "./ChristmasLightArray"
 
 export default class LightController {
   public action: LightActionEnum
-  public start: [number, number]
-  public end: [number, number]
+  public start: ICoordinate
+  public end: ICoordinate
 
   public perform(array: ChristmasLightArray) {
     switch (this.action) {
       case LightActionEnum.off:
-        array.off(this.start[0], this.start[1], this.end[0], this.end[1])
+        array.off(this.start, this.end)
         break
       case LightActionEnum.on:
-        array.on(this.start[0], this.start[1], this.end[0], this.end[1])
+        array.on(this.start, this.end)
         break
       case LightActionEnum.toggle:
-        array.toggle(this.start[0], this.start[1], this.end[0], this.end[1])
+        array.toggle(this.start, this.end)
         break
     }
   }
@@ -37,9 +38,9 @@ export default class LightController {
         }
 
         const start = regexpResult[2].split(',').map(i => parseInt(i))
-        controller.start = [start[0], start[1]]
+        controller.start = { x: start[0], y: start[1] }
         const end = regexpResult[3].split(',').map(i => parseInt(i))
-        controller.end = [end[0], end[1]]
+        controller.end = { x: end[0], y: end[1] }
         result.push(controller)
       }
     }
