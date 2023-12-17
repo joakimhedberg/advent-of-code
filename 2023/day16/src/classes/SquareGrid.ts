@@ -2,7 +2,6 @@ import BeamDirection from "../enums/BeamDirection"
 import ICoordinate from "../interfaces/ICoordinate"
 import Empty from "./Empty"
 import GridItem from "./GridItem"
-import LightBeam from "./LightBeam"
 import Mirror from "./Mirror"
 import Splitter from "./Splitter"
 
@@ -20,51 +19,35 @@ export default class SquareGrid {
     }
   }
 
-  private _coordToString(coord: ICoordinate): string {
-    return `${coord.x}, ${coord.y}`
+  public reset() {
+    this.gridMap.forEach(item => {
+      item.isPassed = false
+      item.passedIndex = -1
+    })
   }
 
-  public createBeam(startPoint: ICoordinate, direction: BeamDirection, beamCallback: (beam: LightBeam) => void): LightBeam {
-    switch (direction) {
-      case BeamDirection.left:
-        const gridItemLeft = this.gridMap.get(this._coordToString({ x: startPoint.x - 1, y: startPoint.y }))
-        if (gridItemLeft) {
-          const beam = new LightBeam(startPoint, { x: startPoint.x - 1, y: startPoint.y }, gridItemLeft)
-          beamCallback(beam)
-          beam.childBeams.push(...gridItemLeft.lightEnter(direction, beamCallback))
-          return beam
-        }
-      case BeamDirection.right:
-        const gridItemRight = this.gridMap.get(this._coordToString({ x: startPoint.x + 1, y: startPoint.y }))
-        if (gridItemRight) {
-          const beam = new LightBeam(startPoint, { x: startPoint.x + 1, y: startPoint.y }, gridItemRight)
-          beamCallback(beam)
-          beam.childBeams.push(...gridItemRight.lightEnter(direction, beamCallback))
-          return beam
-        }
-        break
-      case BeamDirection.up:
-        const gridItemUp = this.gridMap.get(this._coordToString({ x: startPoint.x, y: startPoint.y - 1}))
-        if (gridItemUp) {
-          const beam = new LightBeam(startPoint, { x: startPoint.x, y: startPoint.y - 1 }, gridItemUp)
-          beamCallback(beam)
-          beam.childBeams.push(...gridItemUp.lightEnter(direction, beamCallback))
-          return beam
-        }
-        break
-      case BeamDirection.down:
-        const gridItemDown = this.gridMap.get(this._coordToString({ x: startPoint.x, y: startPoint.y + 1}))
-        if (gridItemDown) {
-          const beam = new LightBeam(startPoint, { x: startPoint.x, y: startPoint.y + 1 }, gridItemDown)
-          beamCallback(beam)
-          beam.childBeams.push(...gridItemDown.lightEnter(direction, beamCallback))
-          return beam
-        }
-        break
+  public getNextItemAtDirection(coordinate: ICoordinate, direction: BeamDirection) {
+    return this.getItemAtCoordinate(this.getNextCoordinate(coordinate, direction))
+  }
+
+  public getNextCoordinate(coordinate: ICoordinate, direction: BeamDirection) {
+    return {
+      x: direction === BeamDirection.left ? coordinate.x - 1 : direction === BeamDirection.right ? coordinate.x + 1 : coordinate.x,
+      y: direction === BeamDirection.up? coordinate.y - 1: direction === BeamDirection.down? coordinate.y + 1: coordinate.y
     }
   }
 
-  public static createItem(coordinate: ICoordinate, grid: SquareGrid, item: string): GridItem {
+  private _coordToString(coord: ICoordinate): string {
+    const result = `${coord.x}, ${coord.y}`
+    return result
+  }
+
+  public getItemAtCoordinate(coordinate: ICoordinate) {
+    const item = this.gridMap.get(this._coordToString(coordinate))
+    return item
+  }
+
+  public static createItem(coordinate: ICoordinate, grid: SquareGrid, item: string): (Mirror | Empty | Splitter) {
     if (item === '.') {
       return new Empty(coordinate, grid, item)
     }
