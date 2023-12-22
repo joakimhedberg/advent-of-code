@@ -10,11 +10,26 @@ for (const line of lines) {
 }
 
 const resolveVariable = (varName: string) => /[0-9]+/.test(varName)? parseInt(varName): targets.get(varName)?.inputValue
-let count = 0
 while (lines.find(f => f.inputValue === undefined)) {
   for (let i = 0; i < lines.length; i++) {
-    lines[i].inputValue = InputLine.calculate(lines[i].parts[0], resolveVariable)
+    if (lines[i].inputValue === undefined) {
+      lines[i].inputValue = InputLine.calculate(lines[i].parts[0], resolveVariable)
+    }
   }
 }
 
-console.log('Part 1: ' + targets.get('a').inputValue)
+const part1 = targets.get('a').inputValue
+console.log('Part 1: ' + part1)
+
+targets.forEach(t => t.inputValue = undefined)
+targets.get('b').inputValue = part1
+
+while (lines.find(f => f.inputValue === undefined)) {
+  for (let i = 0; i < lines.length; i++) {
+    if (lines[i].inputValue === undefined) {
+      lines[i].inputValue = InputLine.calculate(lines[i].parts[0], resolveVariable)
+    }
+  }
+}
+console.log('Part 2: ' + targets.get('a').inputValue)
+
