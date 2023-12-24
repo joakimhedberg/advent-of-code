@@ -50,6 +50,9 @@ export default class TrenchPolygon {
     return Math.abs(interior) - boundary / 2 - 1 + boundary + 2;
   }
 
+  /**
+   * Export the result as geojson, helper for debugging
+   */
   public get asGeoJSON(): string {
     const output: string[] = []
 
@@ -83,6 +86,9 @@ export default class TrenchPolygon {
     return output.join('\n')
   }
   
+  /**
+   * Export the result as html, helper for debugging, do not use with part2 ^^
+   */
   public get asHTML(): string {
     const output: string[] = []
     output.push('<html><head>')
