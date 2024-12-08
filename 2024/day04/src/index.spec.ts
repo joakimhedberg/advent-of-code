@@ -1,7 +1,7 @@
 import { expect, describe, test } from '@jest/globals'
 import XmasFinder from './classes/XmasFinder'
 
-describe('day03', () => {
+describe('day04', () => {
   test('Part 1', () => {
     const finder = new XmasFinder(`MMMSXXMASM
 MSAMXMSMSA

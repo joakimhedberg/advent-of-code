@@ -1,0 +1,56 @@
+Validating: 75,47,61,53,29
+	Number: 29
+	Item is OK
+Validating: 75,47,61,53,29
+	Number: 53
+	Item is OK
+Validating: 75,47,61,53,29
+	Number: 61
+	Item is OK
+Validating: 75,47,61,53,29
+	Number: 47
+	Item is OK
+Valid item: 75,47,61,53,29
+Validating: 97,61,53,29,13
+	Number: 13
+	No map, this is ok
+	Item is OK
+Validating: 97,61,53,29,13
+	Number: 29
+	Item is OK
+Validating: 97,61,53,29,13
+	Number: 53
+	Item is OK
+Validating: 97,61,53,29,13
+	Number: 61
+	Item is OK
+Valid item: 97,61,53,29,13
+Validating: 75,29,13
+	Number: 13
+	No map, this is ok
+	Item is OK
+Validating: 75,29,13
+	Number: 29
+	Item is OK
+Valid item: 75,29,13
+Validating: 75,97,47,61,53
+	Number: 53
+	Item is OK
+Validating: 75,97,47,61,53
+	Number: 61
+	Item is OK
+Validating: 75,97,47,61,53
+	Number: 47
+	Item is OK
+Validating: 75,97,47,61,53
+	Number: 97
+	Invalid: 75 is before 97
+	Map used: 13,29,47,53,61,75
+Validating: 61,13,29
+	Number: 29
+	Invalid: 13 is before 29
+	Map used: 13
+Validating: 97,13,75,29,47
+	Number: 47
+	Invalid: 29 is before 47
+	Map used: 13,29,53,61

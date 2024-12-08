@@ -1,35 +1,38 @@
 import Room from "./Room"
-import { Coordinate, TileType } from "./types"
+import { Coordinate, Direction, TileType } from "./types"
 
 export default class Tile {
     protected _tileType: TileType
-    protected _symbol: string
     protected _coordinate: Coordinate
 
     protected _room: Room
 
-    constructor(data: string, coordinate: Coordinate, room: Room) {
+    public passed: boolean = false
+    public passedDirection: Direction | undefined
+
+    constructor(coordinate: Coordinate, room: Room) {
         this._coordinate = coordinate
         this._room = room
-        switch(data) {
-            case '.': this._tileType = 'floor'
-            break
-            case '#': this._tileType = 'obstacle'
-            break
-            case '<':
-            case '>':
-            case '^':
-            case 'v':
-                this._tileType = 'guard'
-                break
-            default:
-                throw new Error('Invalid tile type')
-        }
-
-        this._symbol = data
-    }
+        this._tileType = 'floor'
+   }
 
     public get tileType(): TileType {
         return this._tileType
+    }
+
+    public get x(): number {
+        return this._coordinate.x
+    }
+
+    public get y(): number {
+        return this._coordinate.y
+    }
+
+    public set x(value: number) {
+        this._coordinate.x = value
+    }
+
+    public set y(value: number) {
+        this._coordinate.y = value
     }
 }
