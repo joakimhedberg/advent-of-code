@@ -1,23 +1,30 @@
 import fs from 'fs'
 
 export default class BookOrder {
-  private _index: Map<number, number[]> = new Map()
+  private _indexKeyBeforeValue: Map<number, number[]> = new Map()
+  private _indexValueBeforeKey: Map<number, number[]> = new Map()
   private _output: string[] = []
 
   constructor(data: string) {
     for (const line of data.split('\n').map(i => i.trim()).filter(i => i.indexOf('|') > -1)) {
       const [x, y] = line.split('|').map(i => parseInt(i.trim()))
 
-      const before = this._index.get(x) ?? []
-      before.push(y)
-      this._index.set(x, before)
+      const after = this._indexKeyBeforeValue.get(x) ?? []
+      after.push(y)
+      this._indexKeyBeforeValue.set(x, after)
+
+      const before = this._indexValueBeforeKey.get(y) ?? []
+      before.push(x)
+      this._indexValueBeforeKey.set(y, before)
     }
 
-    this._index.forEach(value => value.sort())
+
+    this._indexKeyBeforeValue.forEach(value => value.sort())
+    this._indexValueBeforeKey.forEach(value => value.sort())
   }
 
   private isBefore(numbers: number[], number: number, index: number): boolean {
-    const map = this._index.get(number)
+    const map = this._indexKeyBeforeValue.get(number)
     if (!map) {
       this._output.push(`\tNo map, this is ok`)
       return false
@@ -63,33 +70,37 @@ export default class BookOrder {
     let total = 0
     for (let i = 0; i < invalidItems.length; i++) {
       this.sortItems(invalidItems[i])
-      const item = invalidItems[i]
-      const mid = Math.floor(item.length / 2)
-      console.log(this.validateOrder(invalidItems[i]))
-      total += item[mid]
+      if (this.validateOrder(invalidItems[i])) {
+        const item = invalidItems[i]
+        const mid = Math.floor(item.length / 2)
+        total += item[mid]
+      }
     }
 
     return total
   }
 
+  private swap(items: number[], index1: number, index2: number) {
+    const item1 = items[index1]
+    items[index1] = items[index2]
+    items[index2] = item1
+  }
+
   private sortItems(items: number[]) {
-    console.log('Before: ' + items.join(','))
-    for (let i = items.length; i > 0; i--) {
+    while (!this.validateOrder(items)) {
+    for (let i = 0; i < items.length - 1; i++) {
       let after = items[i]
-      for (let j = 0; j < i; j++) {
+      for (let j = i + 1; j < items.length; j++) {
         let before = items[j]
-        const mapping = this._index.get(after)
+        const mapping = this._indexValueBeforeKey.get(after)
         if (mapping) {
           if (mapping.indexOf(before) > -1) {
-            items.splice(j, 0, after)
-            items.splice(i, 1)
-            i--
-            j--
+            this.swap(items, i, j)
           }
         }
       }
     }
-    console.log('After: ' + items.join(','))
+  }
   }
 
   public calculateMidValues(data: string): number {
